@@ -148,7 +148,7 @@ export default function Inventario() {
             const critico = p.stock <= p.stock_minimo
             return (
               <div key={p.id} className="card p-0 overflow-hidden flex flex-col animate-pop
-                                          hover:border-black/[0.12] transition-all duration-150">
+                                          hover:border-bone/[0.12] transition-all duration-150">
 
                 {/* Imagen o placeholder */}
                 <div className="relative h-28 bg-coal shrink-0">
@@ -202,7 +202,7 @@ export default function Inventario() {
 
                   {/* Stock + acciones */}
                   <div className="flex items-center justify-between pt-2.5"
-                    style={{ borderTop: '1px solid rgba(0,0,0,0.07)' }}>
+                    style={{ borderTop: '1px solid var(--c-divider)' }}>
                     <div className="flex items-center gap-1.5">
                       <button
                         onClick={() => incrementarStock(p, -1)}

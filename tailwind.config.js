@@ -1,25 +1,26 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        // Paleta "Luz Urbana" — streetwear premium, tono claro cálido
-        ink:      '#F8F6F3',   // fondo principal (warm off-white)
-        graphite: '#EDEBE6',   // fondo secundario / áreas
-        surface:  '#F3F0EB',   // superficie media
-        coal:     '#E5E2DC',   // relleno para placeholders e imagen
-        bone:     '#1C1A17',   // texto principal (near-black)
-        stone:    '#5C5850',   // texto secundario
-        muted:    '#9C9890',   // texto terciario / muted
-        ember:    '#E0561E',   // acento naranja — marca URBAN SEVEN
-        'ember-muted': '#E0561E30',
-        success:  '#2A7048',
-        'success-dim': '#2A704820',
-        danger:   '#C2452F',
-        'danger-dim':  '#C2452F20',
-        warn:     '#B07828',
-        'warn-dim':    '#B0782820'
+        // Paleta con variables CSS — cambia automáticamente entre modo claro y oscuro
+        ink:      'rgb(var(--ink) / <alpha-value>)',
+        graphite: 'rgb(var(--graphite) / <alpha-value>)',
+        surface:  'rgb(var(--surface) / <alpha-value>)',
+        coal:     'rgb(var(--coal) / <alpha-value>)',
+        bone:     'rgb(var(--bone) / <alpha-value>)',
+        stone:    'rgb(var(--stone) / <alpha-value>)',
+        muted:    'rgb(var(--muted) / <alpha-value>)',
+        ember:    'rgb(var(--ember) / <alpha-value>)',
+        'ember-muted': 'rgba(224,86,30,0.19)',
+        success:  'rgb(var(--success) / <alpha-value>)',
+        'success-dim': 'rgba(42,112,72,0.13)',
+        danger:   'rgb(var(--danger) / <alpha-value>)',
+        'danger-dim':  'rgba(194,69,47,0.13)',
+        warn:     'rgb(var(--warn) / <alpha-value>)',
+        'warn-dim':    'rgba(176,120,40,0.13)'
       },
       fontFamily: {
         display: ['Archivo', 'system-ui', 'sans-serif'],

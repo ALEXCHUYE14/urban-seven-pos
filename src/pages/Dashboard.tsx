@@ -70,7 +70,7 @@ export default function Dashboard() {
       {/* ── Banner caja cerrada ── */}
       {!abierta && (
         <div className="card p-5 sm:p-6"
-          style={{ borderColor: 'rgba(224,86,30,0.25)', background: 'linear-gradient(135deg, #FFF5EC 0%, #FDEEDE 100%)' }}>
+          style={{ borderColor: 'rgba(224,86,30,0.25)', background: 'var(--c-banner-bg)' }}>
           <div className="flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
             <div>
               <p className="eyebrow text-warn">Turno sin iniciar</p>
@@ -109,7 +109,7 @@ export default function Dashboard() {
           {/* Últimas ventas */}
           <section className="card p-0 overflow-hidden">
             <div className="flex items-center justify-between px-5 py-4"
-              style={{ borderBottom: '1px solid rgba(0,0,0,0.07)' }}>
+              style={{ borderBottom: '1px solid var(--c-divider)' }}>
               <h3 className="font-display font-bold text-base text-bone">Últimas ventas</h3>
               <Link to="/ventas" className="text-xs font-bold text-ember hover:underline">
                 Ver todas →
@@ -130,11 +130,11 @@ export default function Dashboard() {
                 </Link>
               </div>
             ) : (
-              <ul className="divide-y" style={{ borderColor: 'rgba(0,0,0,0.07)' }}>
+              <ul className="divide-y" style={{ borderColor: 'var(--c-divider)' }}>
                 {ventas.slice(0, 6).map((v) => (
                   <li key={v.id} className="flex items-center gap-3 px-5 py-3">
                     <div className="w-9 h-9 rounded-lg grid place-items-center shrink-0"
-                      style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)' }}>
+                      style={{ background: 'var(--c-surface-sm)', border: '1px solid var(--c-border)' }}>
                       <span className="font-mono text-[9px] text-muted">#{v.correlativo}</span>
                     </div>
                     <div className="min-w-0 flex-1">
@@ -159,7 +159,7 @@ export default function Dashboard() {
       {/* ── Alertas de stock ── */}
       <section className="card p-0 overflow-hidden">
         <div className="flex items-center justify-between px-5 py-4"
-          style={{ borderBottom: '1px solid rgba(0,0,0,0.07)' }}>
+          style={{ borderBottom: '1px solid var(--c-divider)' }}>
           <h3 className="font-display font-bold text-base text-bone">Alertas de stock</h3>
           <span className={`chip text-[11px] ${
             bajoStock.length ? 'text-warn border-warn/25' : 'text-muted'
@@ -173,7 +173,7 @@ export default function Dashboard() {
             Todo el inventario está por encima del mínimo.
           </p>
         ) : (
-          <ul className="divide-y" style={{ borderColor: 'rgba(0,0,0,0.07)' }}>
+          <ul className="divide-y" style={{ borderColor: 'var(--c-divider)' }}>
             {bajoStock.slice(0, 8).map((p) => (
               <li key={p.id} className="flex items-center gap-3 px-5 py-3">
                 <div className="w-9 h-9 rounded-lg overflow-hidden shrink-0 bg-coal">

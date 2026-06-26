@@ -228,7 +228,7 @@ export default function POS() {
 
           {/* Encabezado carrito */}
           <div className="px-4 py-3 flex items-center justify-between"
-            style={{ borderBottom: '1px solid rgba(0,0,0,0.07)' }}>
+            style={{ borderBottom: '1px solid var(--c-divider)' }}>
             <div className="flex items-center gap-2">
               <h2 className="font-display font-extrabold text-base text-bone">Carrito</h2>
               {numItems > 0 && (
@@ -245,7 +245,7 @@ export default function POS() {
 
           {/* Items */}
           <div className="max-h-[38vh] lg:max-h-[44vh] overflow-y-auto divide-y"
-            style={{ borderColor: 'rgba(0,0,0,0.07)' }}>
+            style={{ borderColor: 'var(--c-divider)' }}>
             {carrito.length === 0 ? (
               <div className="py-12 px-4 text-center">
                 <p className="text-muted text-sm">
@@ -296,7 +296,7 @@ export default function POS() {
           </div>
 
           {/* Totales */}
-          <div className="p-4 space-y-2" style={{ borderTop: '1px solid rgba(0,0,0,0.08)', background: 'rgba(0,0,0,0.03)' }}>
+          <div className="p-4 space-y-2" style={{ borderTop: '1px solid var(--c-border)', background: 'var(--c-surface-xs)' }}>
             <div className="flex justify-between text-xs text-muted">
               <span>Op. gravada</span><span className="font-mono">{money(base)}</span>
             </div>
@@ -304,7 +304,7 @@ export default function POS() {
               <span>IGV (18%)</span><span className="font-mono">{money(igv)}</span>
             </div>
             <div className="flex items-center justify-between pt-1.5"
-              style={{ borderTop: '1px solid rgba(0,0,0,0.08)' }}>
+              style={{ borderTop: '1px solid var(--c-border)' }}>
               <span className="font-display font-extrabold text-lg text-bone">Total</span>
               <span className="font-mono font-black text-2xl text-ember">{money(total)}</span>
             </div>
@@ -334,14 +334,14 @@ export default function POS() {
 
           <div>
             <label className="label">Método de pago</label>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-3 gap-2">
               {METODOS_PAGO.map((m) => (
                 <button key={m.id}
                   onClick={() => setMetodo(m.id as MetodoPago)}
                   className={`btn !py-2.5 text-sm font-semibold border transition-all
                     ${metodo === m.id
                       ? 'bg-ember text-ink border-transparent shadow-ember-sm'
-                      : 'bg-black/[0.04] text-bone border-black/10 hover:bg-black/[0.08]'}`}>
+                      : 'bg-bone/[0.04] text-bone border-bone/10 hover:bg-bone/[0.08]'}`}>
                   {m.label}
                 </button>
               ))}

@@ -88,7 +88,7 @@ export default function Ventas() {
 
         {/* Selector de período */}
         <div className="flex gap-1 p-1 rounded-xl"
-          style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)' }}>
+          style={{ background: 'var(--c-surface-sm)', border: '1px solid var(--c-border)' }}>
           {(['hoy', 'semana', 'todas'] as Filtro[]).map((f) => (
             <button key={f} onClick={() => setFiltro(f)}
               className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all
@@ -137,7 +137,7 @@ export default function Ventas() {
                 >
                   {/* Número */}
                   <div className="w-10 h-10 rounded-xl grid place-items-center shrink-0"
-                    style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.08)' }}>
+                    style={{ background: 'var(--c-surface-sm)', border: '1px solid var(--c-border)' }}>
                     <span className="font-mono text-[10px] text-muted">
                       #{v.correlativo}
                     </span>
@@ -169,7 +169,7 @@ export default function Ventas() {
 
                 {abierta && (
                   <div className="px-4 pb-4 space-y-3 animate-slide-down"
-                    style={{ borderTop: '1px solid rgba(0,0,0,0.07)' }}>
+                    style={{ borderTop: '1px solid var(--c-divider)' }}>
                     <p className="text-xs text-muted pt-3">{fechaLarga(v.created_at)}</p>
 
                     <div className="space-y-1.5">
@@ -185,7 +185,7 @@ export default function Ventas() {
                     </div>
 
                     <div className="flex justify-between text-xs pt-2"
-                      style={{ borderTop: '1px solid rgba(0,0,0,0.07)' }}>
+                      style={{ borderTop: '1px solid var(--c-divider)' }}>
                       <span className="text-muted">IGV incluido</span>
                       <span className="font-mono text-muted">{money(v.igv)}</span>
                     </div>

@@ -1,6 +1,6 @@
 // Tipos del dominio · URBAN SEVEN POS
 
-export type MetodoPago = 'efectivo' | 'tarjeta' | 'yape' | 'transferencia'
+export type MetodoPago = 'efectivo' | 'tarjeta' | 'yape'
 
 export interface Producto {
   id: string

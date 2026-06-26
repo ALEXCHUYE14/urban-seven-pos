@@ -24,7 +24,6 @@ export const TALLAS = ['XS', 'S', 'M', 'L', 'XL', 'XXL', '28', '30', '32', '34',
 
 export const METODOS_PAGO = [
   { id: 'efectivo', label: 'Efectivo' },
-  { id: 'tarjeta', label: 'Tarjeta' },
-  { id: 'yape', label: 'Yape / Plin' },
-  { id: 'transferencia', label: 'Transferencia' }
+  { id: 'yape',     label: 'Yape / Plin' },
+  { id: 'tarjeta',  label: 'Tarjeta' }
 ] as const

@@ -36,16 +36,16 @@ export default function Modal({ open, onClose, title, children, maxW = 'max-w-lg
         className={`relative w-full ${maxW} animate-slide-up
                     rounded-t-xl2 sm:rounded-xl2 max-h-[93vh] overflow-y-auto`}
         style={{
-          background: '#FFFFFF',
-          border: '1px solid rgba(0,0,0,0.1)',
-          boxShadow: '0 24px 64px -12px rgba(0,0,0,0.22), 0 1px 3px rgba(0,0,0,0.08)'
+          background: 'var(--c-card)',
+          border: '1px solid var(--c-border-lg)',
+          boxShadow: '0 24px 64px -12px rgba(0,0,0,0.28), 0 1px 3px rgba(0,0,0,0.1)'
         }}
       >
         {title && (
           <div className="sticky top-0 z-10 flex items-center justify-between px-5 py-4"
             style={{
-              borderBottom: '1px solid rgba(0,0,0,0.08)',
-              background: 'rgba(255,255,255,0.98)',
+              borderBottom: '1px solid var(--c-border)',
+              background: 'var(--c-card-title)',
               backdropFilter: 'blur(8px)'
             }}>
             <h3 className="font-display font-extrabold text-base tracking-tight text-bone">

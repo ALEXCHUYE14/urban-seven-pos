@@ -1,6 +1,5 @@
 import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
-import Logo from '../components/Logo'
 import { useAuth } from '../context/AuthContext'
 import { TIENDA } from '../lib/constants'
 
@@ -25,16 +24,23 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex flex-col bg-ink">
-      <header className="p-5">
-        <Logo size={36} />
+
+      {/* Logo en esquina superior izquierda */}
+      <header className="p-5 flex items-center">
+        <img
+          src="/img/logo.png"
+          alt="URBAN SEVEN"
+          className="h-10 w-auto object-contain select-none dark:invert"
+        />
       </header>
 
       <div className="flex-1 grid lg:grid-cols-2">
 
-        {/* Panel izquierdo — identidad de marca */}
+        {/* Panel izquierdo — identidad de marca (siempre oscuro) */}
         <div className="hidden lg:flex relative items-center justify-center overflow-hidden"
-          style={{ borderRight: '1px solid rgba(255,255,255,0.1)' }}>
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, #1A1916 0%, #141312 100%)' }} />
+          style={{ borderRight: '1px solid rgba(255,255,255,0.08)' }}>
+          <div className="absolute inset-0"
+            style={{ background: 'linear-gradient(135deg, #1A1916 0%, #141312 100%)' }} />
           <span className="jersey-number absolute -right-6 -bottom-20 select-none"
             style={{ fontSize: '22rem', color: 'transparent',
               WebkitTextStroke: '2px rgba(244,241,234,0.05)' }}>
@@ -42,11 +48,13 @@ export default function Login() {
           </span>
           <div className="relative z-10 px-12 max-w-md">
             <p className="eyebrow mb-5">Tienda de ropa urbana · Piura</p>
-            <h1 className="font-display font-black text-6xl leading-[0.92] tracking-tighter">
+            <h1 className="font-display font-black text-6xl leading-[0.92] tracking-tighter"
+              style={{ color: '#F4F1EA' }}>
               VISTE<br />LA CIUDAD<br />
               <span className="text-ember">CON ACTITUD.</span>
             </h1>
-            <p className="mt-7 text-stone text-sm leading-relaxed max-w-sm">
+            <p className="mt-7 text-sm leading-relaxed max-w-sm"
+              style={{ color: '#A8A296' }}>
               Sistema de gestión y punto de venta. Inventario con escáner QR dual,
               control de caja y tickets profesionales en un solo lugar.
             </p>
@@ -59,79 +67,87 @@ export default function Login() {
                     stroke="#E0561E" strokeWidth="2.5">
                     <path d="M20 6 9 17l-5-5" />
                   </svg>
-                  <span className="text-stone text-sm">{f}</span>
+                  <span className="text-sm" style={{ color: '#A8A296' }}>{f}</span>
                 </div>
               ))}
             </div>
           </div>
         </div>
 
-        {/* Panel derecho — formulario */}
-        <div className="flex items-center justify-center p-6 sm:p-10">
+        {/* Panel derecho — formulario con tarjeta premium */}
+        <div className="flex items-center justify-center p-4 sm:p-8">
           <div className="w-full max-w-sm">
 
-            <div className="mb-8">
-              <p className="eyebrow mb-2">Acceso al sistema</p>
-              <h2 className="font-display font-extrabold text-3xl tracking-tight text-bone">
-                Inicia sesión
-              </h2>
-              <p className="text-muted text-sm mt-1.5">
-                Usa tu cuenta del equipo {TIENDA.nombre}.
+            {/* Tarjeta premium */}
+            <div className="rounded-2xl px-8 py-10" style={{
+              background: 'var(--c-card)',
+              border: '1px solid var(--c-border)',
+              boxShadow: '0 20px 56px -12px rgba(0,0,0,0.14), 0 4px 14px -4px rgba(0,0,0,0.06), 0 1px 0 0 rgba(255,255,255,0.6) inset'
+            }}>
+
+              <div className="mb-8">
+                <p className="eyebrow mb-2">Acceso al sistema</p>
+                <h2 className="font-display font-extrabold text-3xl tracking-tight text-bone">
+                  Inicia sesión
+                </h2>
+                <p className="text-muted text-sm mt-1.5">
+                  Usa tu cuenta del equipo {TIENDA.nombre}.
+                </p>
+              </div>
+
+              <form onSubmit={onSubmit} className="space-y-4">
+                <div>
+                  <label className="label" htmlFor="email">Correo electrónico</label>
+                  <input
+                    id="email" type="email" autoComplete="email" required
+                    className="input" placeholder="tucorreo@urbanseven.pe"
+                    value={email} onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+
+                <div>
+                  <label className="label" htmlFor="password">Contraseña</label>
+                  <div className="relative">
+                    <input
+                      id="password" type={verPass ? 'text' : 'password'}
+                      autoComplete="current-password" required
+                      className="input pr-12" placeholder="••••••••"
+                      value={password} onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setVerPass((v) => !v)}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-muted hover:text-bone transition-colors"
+                      aria-label="Ver contraseña"
+                    >
+                      {verPass ? <EyeOff /> : <Eye />}
+                    </button>
+                  </div>
+                </div>
+
+                {error && (
+                  <div className="rounded-xl px-4 py-3 text-sm text-bone animate-slide-up"
+                    style={{ background: 'rgba(194,69,47,0.12)', border: '1px solid rgba(194,69,47,0.3)' }}>
+                    {error}
+                  </div>
+                )}
+
+                <button type="submit" disabled={cargando} className="btn-primary w-full !py-3.5 !text-base mt-1">
+                  {cargando ? 'Ingresando…' : 'Ingresar'}
+                </button>
+              </form>
+
+              <p className="mt-8 text-center text-sm text-muted">
+                ¿Problemas para acceder?{' '}
+                <a
+                  href={TIENDA.whatsappSoporte}
+                  target="_blank" rel="noopener noreferrer"
+                  className="text-ember font-semibold hover:underline"
+                >
+                  Contactar soporte
+                </a>
               </p>
             </div>
-
-            <form onSubmit={onSubmit} className="space-y-4">
-              <div>
-                <label className="label" htmlFor="email">Correo electrónico</label>
-                <input
-                  id="email" type="email" autoComplete="email" required
-                  className="input" placeholder="tucorreo@urbanseven.pe"
-                  value={email} onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-
-              <div>
-                <label className="label" htmlFor="password">Contraseña</label>
-                <div className="relative">
-                  <input
-                    id="password" type={verPass ? 'text' : 'password'}
-                    autoComplete="current-password" required
-                    className="input pr-12" placeholder="••••••••"
-                    value={password} onChange={(e) => setPassword(e.target.value)}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setVerPass((v) => !v)}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-muted hover:text-bone transition-colors"
-                    aria-label="Ver contraseña"
-                  >
-                    {verPass ? <EyeOff /> : <Eye />}
-                  </button>
-                </div>
-              </div>
-
-              {error && (
-                <div className="rounded-xl px-4 py-3 text-sm text-bone animate-slide-up"
-                  style={{ background: 'rgba(194,69,47,0.12)', border: '1px solid rgba(194,69,47,0.3)' }}>
-                  {error}
-                </div>
-              )}
-
-              <button type="submit" disabled={cargando} className="btn-primary w-full !py-3.5 !text-base mt-1">
-                {cargando ? 'Ingresando…' : 'Ingresar'}
-              </button>
-            </form>
-
-            <p className="mt-8 text-center text-sm text-muted">
-              ¿Problemas para acceder?{' '}
-              <a
-                href={TIENDA.whatsappSoporte}
-                target="_blank" rel="noopener noreferrer"
-                className="text-ember font-semibold hover:underline"
-              >
-                Contactar soporte
-              </a>
-            </p>
           </div>
         </div>
       </div>
