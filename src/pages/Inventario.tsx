@@ -148,7 +148,7 @@ export default function Inventario() {
             const critico = p.stock <= p.stock_minimo
             return (
               <div key={p.id} className="card p-0 overflow-hidden flex flex-col animate-pop
-                                          hover:border-white/[0.10] transition-all duration-150">
+                                          hover:border-black/[0.12] transition-all duration-150">
 
                 {/* Imagen o placeholder */}
                 <div className="relative h-28 bg-coal shrink-0">
@@ -169,9 +169,9 @@ export default function Inventario() {
                     </div>
                   )}
                   {/* Badge de precio sobre imagen */}
-                  <div className="absolute top-2 right-2 bg-ink/75 backdrop-blur-sm
-                                  rounded-lg px-2 py-1 font-mono font-bold text-ember text-sm"
-                    style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
+                  <div className="absolute top-2 right-2 bg-bone/80 backdrop-blur-sm
+                                  rounded-lg px-2 py-1 font-mono font-bold text-ink text-sm"
+                    style={{ border: '1px solid rgba(255,255,255,0.15)' }}>
                     {money(p.precio_venta)}
                   </div>
                   {critico && (
@@ -202,7 +202,7 @@ export default function Inventario() {
 
                   {/* Stock + acciones */}
                   <div className="flex items-center justify-between pt-2.5"
-                    style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                    style={{ borderTop: '1px solid rgba(0,0,0,0.07)' }}>
                     <div className="flex items-center gap-1.5">
                       <button
                         onClick={() => incrementarStock(p, -1)}

@@ -140,7 +140,7 @@ export default function Caja() {
         {caja && (
           <div className="space-y-4">
             <div className="rounded-xl p-4 space-y-2.5"
-              style={{ background: 'rgba(20,19,18,0.7)', border: '1px solid rgba(255,255,255,0.07)' }}>
+              style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)' }}>
               <LineResumen label="Ventas del turno"     value={money(caja.total_ventas)} />
               <LineResumen label="Efectivo en caja"     value={money(caja.monto_inicial + caja.total_efectivo)} fuerte />
             </div>
@@ -180,7 +180,7 @@ export default function Caja() {
 
 function BoxMetric({ label, value, destacado }: { label: string; value: string; destacado?: boolean }) {
   return (
-    <div className="rounded-xl p-4" style={{ background: 'rgba(20,19,18,0.6)', border: '1px solid rgba(255,255,255,0.07)' }}>
+    <div className="rounded-xl p-4" style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)' }}>
       <p className="text-[10px] uppercase tracking-wider text-muted">{label}</p>
       <p className={`font-mono font-bold text-lg mt-0.5 ${destacado ? 'text-ember' : 'text-bone'}`}>
         {value}
@@ -190,7 +190,7 @@ function BoxMetric({ label, value, destacado }: { label: string; value: string; 
 }
 function MiniMetric({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-lg px-3 py-2.5 text-center" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
+    <div className="rounded-lg px-3 py-2.5 text-center" style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)' }}>
       <p className="text-[9.5px] uppercase tracking-wide text-muted">{label}</p>
       <p className="font-mono text-sm font-semibold text-bone mt-0.5">{value}</p>
     </div>

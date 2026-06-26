@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 * {
@@ -16,8 +16,8 @@ html, body, #root {
 
 body {
   margin: 0;
-  background-color: #141312;
-  color: #F4F1EA;
+  background-color: #F8F6F3;
+  color: #1C1A17;
   font-family: 'Inter', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   overscroll-behavior-y: none;
@@ -26,76 +26,78 @@ body {
 /* Scrollbar discreto */
 ::-webkit-scrollbar        { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track  { background: transparent; }
-::-webkit-scrollbar-thumb  { background: #2E2C26; border-radius: 8px; border: 2px solid #141312; }
-::-webkit-scrollbar-thumb:hover { background: #3D3A32; }
+::-webkit-scrollbar-thumb  { background: #C8C5BF; border-radius: 8px; border: 2px solid #F8F6F3; }
+::-webkit-scrollbar-thumb:hover { background: #B0ADA7; }
 
 /* ---- Sistema de componentes ---- */
 @layer components {
 
-  /* Cards con gradiente sutil para romper la planitud genérica */
+  /* Cards: fondo blanco con sombra sutil */
   .card {
-    background: linear-gradient(160deg, #2A2822 0%, #211F1B 100%);
-    @apply rounded-xl2 border border-white/[0.06] shadow-card;
+    background: #FFFFFF;
+    @apply rounded-xl2 shadow-card;
+    border: 1px solid rgba(0,0,0,0.08);
   }
   .card-interactive {
     @apply card transition-all duration-200 cursor-pointer;
-    @apply hover:border-white/[0.12] hover:shadow-card-hover hover:-translate-y-px;
+    @apply hover:shadow-card-hover hover:-translate-y-px hover:border-black/[0.14];
     @apply active:translate-y-0 active:shadow-card;
   }
 
-  /* Botones con capas de sombra para dar profundidad real */
+  /* Botones */
   .btn {
     @apply inline-flex items-center justify-center gap-2 font-semibold rounded-xl
            px-4 py-3 text-sm transition-all duration-150
            active:scale-[.96] select-none
-           disabled:opacity-35 disabled:pointer-events-none;
+           disabled:opacity-40 disabled:pointer-events-none;
   }
   .btn-primary {
     @apply btn bg-ember text-ink;
-    box-shadow: 0 4px 16px -4px rgba(224,86,30,0.5), inset 0 1px 0 rgba(255,255,255,0.12);
+    box-shadow: 0 4px 16px -4px rgba(224,86,30,0.45), inset 0 1px 0 rgba(255,255,255,0.25);
   }
   .btn-primary:hover:not(:disabled) {
-    box-shadow: 0 8px 28px -6px rgba(224,86,30,0.6), inset 0 1px 0 rgba(255,255,255,0.18);
-    filter: brightness(1.08);
+    box-shadow: 0 8px 28px -6px rgba(224,86,30,0.5), inset 0 1px 0 rgba(255,255,255,0.3);
+    filter: brightness(1.06);
   }
   .btn-primary:active:not(:disabled) {
-    box-shadow: 0 2px 8px -2px rgba(224,86,30,0.4), inset 0 1px 0 rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px -2px rgba(224,86,30,0.35), inset 0 1px 0 rgba(0,0,0,0.06);
     filter: brightness(0.97);
   }
 
   .btn-ghost {
-    @apply btn text-bone border border-white/[0.09];
-    background: rgba(255,255,255,0.04);
+    @apply btn text-bone;
+    background: rgba(0,0,0,0.04);
+    border: 1px solid rgba(0,0,0,0.1);
   }
   .btn-ghost:hover:not(:disabled) {
-    background: rgba(255,255,255,0.08);
-    @apply border-white/[0.14];
+    background: rgba(0,0,0,0.07);
+    border-color: rgba(0,0,0,0.15);
   }
 
   .btn-danger {
-    @apply btn text-bone;
-    background: rgba(194,69,47,0.85);
+    @apply btn text-white;
+    background: #C2452F;
     box-shadow: 0 4px 16px -4px rgba(194,69,47,0.35);
   }
   .btn-danger:hover:not(:disabled) {
-    background: rgba(194,69,47,1);
+    background: #A83A27;
     box-shadow: 0 6px 20px -4px rgba(194,69,47,0.5);
   }
 
-  /* Input con animación de foco suave */
+  /* Input con foco suave */
   .input {
     @apply w-full rounded-xl px-4 py-3 text-bone text-sm
-           placeholder:text-stone/50 outline-none transition-all duration-200;
-    background: rgba(20,19,18,0.8);
-    border: 1px solid rgba(255,255,255,0.09);
+           placeholder:text-muted outline-none transition-all duration-200;
+    background: #FFFFFF;
+    border: 1px solid rgba(0,0,0,0.12);
   }
   .input:focus {
-    border-color: rgba(224,86,30,0.6);
-    box-shadow: 0 0 0 3px rgba(224,86,30,0.12), inset 0 1px 0 rgba(255,255,255,0.03);
-    background: rgba(20,19,18,0.95);
+    border-color: rgba(224,86,30,0.55);
+    box-shadow: 0 0 0 3px rgba(224,86,30,0.1);
+    background: #FFFFFF;
   }
   .input:hover:not(:focus) {
-    border-color: rgba(255,255,255,0.15);
+    border-color: rgba(0,0,0,0.2);
   }
 
   .label {
@@ -106,8 +108,8 @@ body {
   .chip {
     @apply inline-flex items-center gap-1.5 text-[11px] font-mono
            px-2 py-0.5 rounded-md;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(0,0,0,0.05);
+    border: 1px solid rgba(0,0,0,0.09);
   }
   .badge {
     @apply inline-flex items-center justify-center font-bold text-[10px]
@@ -122,20 +124,20 @@ body {
   /* Skeleton loader */
   .skeleton {
     @apply rounded-lg;
-    background: linear-gradient(90deg, #26241F 25%, #2E2B24 50%, #26241F 75%);
+    background: linear-gradient(90deg, #ECEAE5 25%, #F5F3EE 50%, #ECEAE5 75%);
     background-size: 200% 100%;
     @apply animate-shimmer;
   }
 
   /* Línea divisora */
   .divider {
-    @apply border-t border-white/[0.06];
+    @apply border-t border-black/[0.07];
   }
 
   /* Indicador de estado en vivo */
   .status-dot-ok {
     @apply w-2 h-2 rounded-full bg-success;
-    box-shadow: 0 0 0 2px rgba(63,125,92,0.25);
+    box-shadow: 0 0 0 2px rgba(42,112,72,0.2);
     animation: pulse-glow 2s ease-in-out infinite;
   }
   .status-dot-off {
@@ -146,7 +148,7 @@ body {
   .scroll-x {
     @apply overflow-x-auto;
     scrollbar-width: thin;
-    scrollbar-color: #2E2C26 transparent;
+    scrollbar-color: #C8C5BF transparent;
   }
 }
 
@@ -155,7 +157,7 @@ body {
   font-family: 'Archivo', sans-serif;
   font-weight: 900;
   letter-spacing: -0.06em;
-  -webkit-text-stroke: 2px rgba(244,241,234,0.08);
+  -webkit-text-stroke: 2px rgba(28,26,23,0.07);
   color: transparent;
   line-height: 0.82;
   user-select: none;
@@ -164,7 +166,6 @@ body {
 
 /* ============================================================
    IMPRESIÓN — Ticket térmico 80mm
-   Oculta toda la UI; muestra solo el área de impresión.
    ============================================================ */
 @media print {
   body * { visibility: hidden !important; }

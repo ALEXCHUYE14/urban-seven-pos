@@ -27,7 +27,7 @@ export default function Modal({ open, onClose, title, children, maxW = 'max-w-lg
       {/* Backdrop */}
       <div
         className="absolute inset-0 animate-fade-in"
-        style={{ background: 'rgba(12,11,10,0.82)', backdropFilter: 'blur(8px)' }}
+        style={{ background: 'rgba(12,11,10,0.55)', backdropFilter: 'blur(6px)' }}
         onClick={onClose}
       />
 
@@ -36,16 +36,16 @@ export default function Modal({ open, onClose, title, children, maxW = 'max-w-lg
         className={`relative w-full ${maxW} animate-slide-up
                     rounded-t-xl2 sm:rounded-xl2 max-h-[93vh] overflow-y-auto`}
         style={{
-          background: 'linear-gradient(160deg, #2A2822 0%, #1F1E1A 100%)',
-          border: '1px solid rgba(255,255,255,0.08)',
-          boxShadow: '0 32px 80px -16px rgba(0,0,0,0.9), 0 1px 0 0 rgba(255,255,255,0.06) inset'
+          background: '#FFFFFF',
+          border: '1px solid rgba(0,0,0,0.1)',
+          boxShadow: '0 24px 64px -12px rgba(0,0,0,0.22), 0 1px 3px rgba(0,0,0,0.08)'
         }}
       >
         {title && (
           <div className="sticky top-0 z-10 flex items-center justify-between px-5 py-4"
             style={{
-              borderBottom: '1px solid rgba(255,255,255,0.06)',
-              background: 'rgba(38,36,31,0.95)',
+              borderBottom: '1px solid rgba(0,0,0,0.08)',
+              background: 'rgba(255,255,255,0.98)',
               backdropFilter: 'blur(8px)'
             }}>
             <h3 className="font-display font-extrabold text-base tracking-tight text-bone">

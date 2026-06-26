@@ -29,17 +29,18 @@ export function ToastProvider({ children }: { children: ReactNode }) {
           <div
             key={t.id}
             className="pointer-events-auto animate-slide-up max-w-xs w-full flex items-center gap-3
-                       rounded-xl px-4 py-3 text-sm font-semibold shadow-card"
+                       rounded-xl px-4 py-3 text-sm font-semibold"
             style={{
               background:
-                t.tipo === 'ok'    ? 'rgba(40,80,58,0.97)' :
-                t.tipo === 'error' ? 'rgba(100,38,28,0.97)' :
-                                     'rgba(38,36,31,0.97)',
+                t.tipo === 'ok'    ? 'rgba(236,252,243,0.99)' :
+                t.tipo === 'error' ? 'rgba(254,241,240,0.99)' :
+                                     'rgba(255,255,255,0.99)',
               border:
-                t.tipo === 'ok'    ? '1px solid rgba(63,125,92,0.4)'  :
-                t.tipo === 'error' ? '1px solid rgba(194,69,47,0.4)'  :
-                                     '1px solid rgba(255,255,255,0.09)',
-              color: '#F4F1EA'
+                t.tipo === 'ok'    ? '1px solid rgba(42,112,72,0.3)'  :
+                t.tipo === 'error' ? '1px solid rgba(194,69,47,0.3)'  :
+                                     '1px solid rgba(0,0,0,0.1)',
+              color: '#1C1A17',
+              boxShadow: '0 4px 16px -4px rgba(0,0,0,0.12)'
             }}
           >
             <span className={

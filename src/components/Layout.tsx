@@ -31,16 +31,16 @@ export default function Layout({ children }: { children: ReactNode }) {
 
       {/* ── Header ───────────────────────────────────────────── */}
       <header className="sticky top-0 z-30"
-        style={{ background: 'rgba(20,19,18,0.88)', backdropFilter: 'blur(12px)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+        style={{ background: 'rgba(248,246,243,0.92)', backdropFilter: 'blur(12px)', borderBottom: '1px solid rgba(0,0,0,0.08)' }}>
         <div className="mx-auto max-w-6xl px-4 h-14 flex items-center justify-between gap-4">
           <Logo size={30} />
 
           <div className="flex items-center gap-2">
             {/* Indicador de caja */}
-            <div className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold
+            <div className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold border
               ${abierta
-                ? 'bg-success/10 text-success border border-success/20'
-                : 'bg-white/5 text-muted border border-white/08'}`}>
+                ? 'bg-success/[0.08] text-success border-success/20'
+                : 'bg-black/[0.04] text-muted border-black/[0.08]'}`}>
               {abierta
                 ? <span className="status-dot-ok" />
                 : <span className="status-dot-off" />}
@@ -69,7 +69,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 
         {/* Sidebar desktop */}
         <aside className="hidden sm:flex flex-col w-52 shrink-0 py-5 px-3 gap-0.5"
-          style={{ borderRight: '1px solid rgba(255,255,255,0.05)' }}>
+          style={{ borderRight: '1px solid rgba(0,0,0,0.08)' }}>
 
           {/* Nav principal */}
           <nav className="flex flex-col gap-0.5">
@@ -82,7 +82,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                   `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150
                    ${isActive
                      ? 'bg-ember text-ink shadow-ember-sm'
-                     : 'text-stone hover:text-bone hover:bg-white/[0.06]'}`
+                     : 'text-stone hover:text-bone hover:bg-black/[0.05]'}`
                 }
               >
                 <Icon /> {label}
@@ -91,7 +91,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           </nav>
 
           {/* Separador */}
-          <div className="mt-auto pt-4" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+          <div className="mt-auto pt-4" style={{ borderTop: '1px solid rgba(0,0,0,0.07)' }}>
             {navBottom.map(({ to, label, icon: Icon, end }) => (
               <NavLink
                 key={to}
@@ -101,7 +101,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                   `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150
                    ${isActive
                      ? 'bg-ember text-ink shadow-ember-sm'
-                     : 'text-stone hover:text-bone hover:bg-white/[0.06]'}`
+                     : 'text-stone hover:text-bone hover:bg-black/[0.05]'}`
                 }
               >
                 <Icon /> {label}
@@ -128,7 +128,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 
       {/* ── Nav inferior móvil ───────────────────────────────── */}
       <nav className="sm:hidden fixed bottom-0 inset-x-0 z-30"
-        style={{ background: 'rgba(20,19,18,0.94)', backdropFilter: 'blur(14px)', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+        style={{ background: 'rgba(248,246,243,0.96)', backdropFilter: 'blur(14px)', borderTop: '1px solid rgba(0,0,0,0.1)' }}>
         <div className="grid grid-cols-6 px-1 pt-1.5 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
           {[...nav, ...navBottom].map(({ to, label, icon: Icon, end }) => (
             <NavLink
@@ -166,4 +166,3 @@ function ListIcon()     { return <Ic><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 
 function CashIcon()     { return <Ic><rect x="2" y="6" width="20" height="12" rx="2" /><circle cx="12" cy="12" r="2" /><path d="M6 12h.01M18 12h.01" /></Ic> }
 function SettingsIcon() { return <Ic><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" /></Ic> }
 function LogoutIcon()   { return <Ic><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" /></Ic> }
-

@@ -100,7 +100,7 @@ export default function Ajustes() {
       </div>
 
       {/* ── Tabs ── */}
-      <div className="flex gap-1 p-1 rounded-xl" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
+      <div className="flex gap-1 p-1 rounded-xl" style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.07)' }}>
         {tabs.map((t) => (
           <button
             key={t.id}
@@ -127,7 +127,7 @@ export default function Ajustes() {
           >
             <div className="space-y-4">
               <div className="rounded-xl p-4 space-y-2"
-                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}>
                 <InfoRow label="Ancho de papel" value="80 mm (térmico)" />
                 <InfoRow label="Tamaño de página" value="80mm × auto (longitud variable)" />
                 <InfoRow label="Márgenes" value="0 mm (configurados vía @page CSS)" />
@@ -163,7 +163,7 @@ export default function Ajustes() {
           {/* Ticket PDF */}
           <Section title="Reporte PDF" subtitle="Genera reportes en A4 para exportar o archivar.">
             <div className="rounded-xl p-4 space-y-2"
-              style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+              style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}>
               <InfoRow label="Formato" value="A4 (210 × 297 mm)" />
               <InfoRow label="Generado con" value="jsPDF 4 + AutoTable" />
               <InfoRow label="Disponible en" value="Caja → Reporte PDF / Ventas → Reimprimir" />
@@ -179,7 +179,7 @@ export default function Ajustes() {
         <div className="space-y-4 animate-fade-in">
           <Section title="Datos de la tienda" subtitle="Aparecen en tickets y reportes. Para cambiarlos, edita src/lib/constants.ts.">
             <div className="rounded-xl p-4 space-y-3"
-              style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+              style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}>
               <InfoRow label="Nombre" value={TIENDA.nombre} />
               <InfoRow label="Dirección" value={TIENDA.direccion} />
               <InfoRow label="Soporte WhatsApp" value={TIENDA.whatsappSoporte} />
@@ -188,7 +188,7 @@ export default function Ajustes() {
 
           <Section title="Parámetros fiscales" subtitle="Configuración de impuestos vigente.">
             <div className="rounded-xl p-4 space-y-2"
-              style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+              style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}>
               <InfoRow label="IGV" value="18% (incluido en el precio de venta)" />
               <InfoRow label="Moneda" value="Soles peruanos (PEN)" />
               <InfoRow label="Formato de fecha" value="es-PE (DD/MM/AAAA HH:MM)" />
@@ -204,7 +204,7 @@ export default function Ajustes() {
         <div className="space-y-4 animate-fade-in">
           <Section title="Sesión activa" subtitle="Datos de la cuenta con la que iniciaste sesión.">
             <div className="rounded-xl p-4 space-y-3"
-              style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+              style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}>
               <InfoRow label="Email" value={user?.email ?? '—'} />
               <InfoRow label="ID de usuario" value={user?.id ? user.id.slice(0, 18) + '…' : '—'} />
               <InfoRow label="Proveedor" value="Email + Contraseña (Supabase Auth)" />
@@ -241,9 +241,9 @@ export default function Ajustes() {
             subtitle="Ejecuta este SQL en el Editor SQL de Supabase para habilitar la columna imagen_url y el bucket de Storage."
           >
             <div className="rounded-xl overflow-hidden"
-              style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
+              style={{ border: '1px solid rgba(0,0,0,0.09)' }}>
               <div className="flex items-center justify-between px-4 py-2.5"
-                style={{ background: 'rgba(255,255,255,0.04)', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+                style={{ background: 'rgba(0,0,0,0.04)', borderBottom: '1px solid rgba(0,0,0,0.08)' }}>
                 <span className="text-[11px] font-mono text-stone">migration_v2_storage.sql</span>
                 <button
                   onClick={copiarSQL}
@@ -254,7 +254,7 @@ export default function Ajustes() {
                 </button>
               </div>
               <pre className="text-[11.5px] font-mono text-stone/90 p-4 overflow-x-auto leading-relaxed"
-                style={{ background: 'rgba(20,19,18,0.9)' }}>
+                style={{ background: 'rgba(0,0,0,0.04)', borderRadius: '0.75rem' }}>
                 <code>{SQL_MIGRACION.trim()}</code>
               </pre>
             </div>

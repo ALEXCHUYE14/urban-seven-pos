@@ -228,7 +228,7 @@ export default function POS() {
 
           {/* Encabezado carrito */}
           <div className="px-4 py-3 flex items-center justify-between"
-            style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+            style={{ borderBottom: '1px solid rgba(0,0,0,0.07)' }}>
             <div className="flex items-center gap-2">
               <h2 className="font-display font-extrabold text-base text-bone">Carrito</h2>
               {numItems > 0 && (
@@ -245,7 +245,7 @@ export default function POS() {
 
           {/* Items */}
           <div className="max-h-[38vh] lg:max-h-[44vh] overflow-y-auto divide-y"
-            style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
+            style={{ borderColor: 'rgba(0,0,0,0.07)' }}>
             {carrito.length === 0 ? (
               <div className="py-12 px-4 text-center">
                 <p className="text-muted text-sm">
@@ -296,7 +296,7 @@ export default function POS() {
           </div>
 
           {/* Totales */}
-          <div className="p-4 space-y-2" style={{ borderTop: '1px solid rgba(255,255,255,0.08)', background: 'rgba(20,19,18,0.5)' }}>
+          <div className="p-4 space-y-2" style={{ borderTop: '1px solid rgba(0,0,0,0.08)', background: 'rgba(0,0,0,0.03)' }}>
             <div className="flex justify-between text-xs text-muted">
               <span>Op. gravada</span><span className="font-mono">{money(base)}</span>
             </div>
@@ -304,7 +304,7 @@ export default function POS() {
               <span>IGV (18%)</span><span className="font-mono">{money(igv)}</span>
             </div>
             <div className="flex items-center justify-between pt-1.5"
-              style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+              style={{ borderTop: '1px solid rgba(0,0,0,0.08)' }}>
               <span className="font-display font-extrabold text-lg text-bone">Total</span>
               <span className="font-mono font-black text-2xl text-ember">{money(total)}</span>
             </div>
@@ -341,7 +341,7 @@ export default function POS() {
                   className={`btn !py-2.5 text-sm font-semibold border transition-all
                     ${metodo === m.id
                       ? 'bg-ember text-ink border-transparent shadow-ember-sm'
-                      : 'bg-white/5 text-bone border-white/10 hover:bg-white/10'}`}>
+                      : 'bg-black/[0.04] text-bone border-black/10 hover:bg-black/[0.08]'}`}>
                   {m.label}
                 </button>
               ))}

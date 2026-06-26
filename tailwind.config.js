@@ -4,22 +4,22 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Paleta "Dorsal 07" — streetwear premium, negro cálido
-        ink:      '#141312',
-        graphite: '#26241F',
-        surface:  '#211F1B',
-        coal:     '#1C1B18',
-        bone:     '#F4F1EA',
-        stone:    '#A8A296',
-        muted:    '#6B6760',
-        ember:    '#E0561E',
-        'ember-muted': '#B8451640',
-        success:  '#3F7D5C',
-        'success-dim': '#2A5C3F20',
+        // Paleta "Luz Urbana" — streetwear premium, tono claro cálido
+        ink:      '#F8F6F3',   // fondo principal (warm off-white)
+        graphite: '#EDEBE6',   // fondo secundario / áreas
+        surface:  '#F3F0EB',   // superficie media
+        coal:     '#E5E2DC',   // relleno para placeholders e imagen
+        bone:     '#1C1A17',   // texto principal (near-black)
+        stone:    '#5C5850',   // texto secundario
+        muted:    '#9C9890',   // texto terciario / muted
+        ember:    '#E0561E',   // acento naranja — marca URBAN SEVEN
+        'ember-muted': '#E0561E30',
+        success:  '#2A7048',
+        'success-dim': '#2A704820',
         danger:   '#C2452F',
         'danger-dim':  '#C2452F20',
-        warn:     '#C98A2B',
-        'warn-dim':    '#C98A2B20'
+        warn:     '#B07828',
+        'warn-dim':    '#B0782820'
       },
       fontFamily: {
         display: ['Archivo', 'system-ui', 'sans-serif'],
@@ -31,16 +31,16 @@ export default {
         display:  '-0.02em'
       },
       borderRadius: {
-        xl2:  '1.25rem',
-        xl3:  '1.5rem'
+        xl2: '1.25rem',
+        xl3: '1.5rem'
       },
       boxShadow: {
-        card:    '0 1px 0 0 rgba(255,255,255,0.05) inset, 0 16px 48px -16px rgba(0,0,0,0.7)',
-        'card-hover': '0 1px 0 0 rgba(255,255,255,0.07) inset, 0 20px 60px -16px rgba(0,0,0,0.8)',
-        ember:   '0 8px 32px -8px rgba(224,86,30,0.55)',
-        'ember-sm': '0 4px 16px -4px rgba(224,86,30,0.4)',
-        glow:    '0 0 0 3px rgba(224,86,30,0.18)',
-        'inner-top': '0 1px 0 0 rgba(255,255,255,0.06) inset'
+        card:         '0 1px 3px 0 rgba(0,0,0,0.07), 0 1px 2px -1px rgba(0,0,0,0.05)',
+        'card-hover': '0 6px 18px -4px rgba(0,0,0,0.12), 0 2px 6px -2px rgba(0,0,0,0.06)',
+        ember:        '0 8px 32px -8px rgba(224,86,30,0.50)',
+        'ember-sm':   '0 4px 16px -4px rgba(224,86,30,0.40)',
+        glow:         '0 0 0 3px rgba(224,86,30,0.18)',
+        'inner-top':  'inset 0 1px 0 rgba(255,255,255,0.8)'
       },
       keyframes: {
         'slide-up': {
@@ -64,8 +64,8 @@ export default {
           '100%': { transform: 'scale(1)',    opacity: '1' }
         },
         'pulse-glow': {
-          '0%, 100%': { opacity: '1', boxShadow: '0 0 0 0 rgba(63,125,92,0.4)' },
-          '50%':      { opacity: '0.85', boxShadow: '0 0 0 4px rgba(63,125,92,0)' }
+          '0%, 100%': { opacity: '1', boxShadow: '0 0 0 0 rgba(42,112,72,0.35)' },
+          '50%':      { opacity: '0.85', boxShadow: '0 0 0 4px rgba(42,112,72,0)' }
         },
         'shimmer': {
           '0%':   { backgroundPosition: '-200% 0' },
@@ -73,13 +73,13 @@ export default {
         }
       },
       animation: {
-        'slide-up':    'slide-up .26s cubic-bezier(.16,1,.3,1)',
-        'slide-down':  'slide-down .22s cubic-bezier(.16,1,.3,1)',
-        'fade-in':     'fade-in .2s ease-out',
-        'scan-line':   'scan-line 2s ease-in-out infinite alternate',
-        'pop':         'pop .17s ease-out',
-        'pulse-glow':  'pulse-glow 2s ease-in-out infinite',
-        'shimmer':     'shimmer 1.6s linear infinite'
+        'slide-up':   'slide-up .26s cubic-bezier(.16,1,.3,1)',
+        'slide-down': 'slide-down .22s cubic-bezier(.16,1,.3,1)',
+        'fade-in':    'fade-in .2s ease-out',
+        'scan-line':  'scan-line 2s ease-in-out infinite alternate',
+        'pop':        'pop .17s ease-out',
+        'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
+        'shimmer':    'shimmer 1.6s linear infinite'
       }
     }
   },

@@ -33,7 +33,7 @@ export default function Login() {
 
         {/* Panel izquierdo — identidad de marca */}
         <div className="hidden lg:flex relative items-center justify-center overflow-hidden"
-          style={{ borderRight: '1px solid rgba(255,255,255,0.05)' }}>
+          style={{ borderRight: '1px solid rgba(255,255,255,0.1)' }}>
           <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, #1A1916 0%, #141312 100%)' }} />
           <span className="jersey-number absolute -right-6 -bottom-20 select-none"
             style={{ fontSize: '22rem', color: 'transparent',
