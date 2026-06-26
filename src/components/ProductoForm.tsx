@@ -158,7 +158,7 @@ export default function ProductoForm({ inicial, codigoPrecargado, guardando, onS
             className={`btn shrink-0 !px-3 transition-colors ${
               camaraActiva
                 ? 'bg-ember text-ink shadow-ember-sm'
-                : 'bg-white/5 text-stone border border-white/10 hover:text-bone hover:bg-white/10'
+                : 'bg-black/[0.04] text-stone border border-black/10 hover:text-bone hover:bg-black/[0.08]'
             }`}
           >
             <CameraQrIcon />
@@ -268,7 +268,7 @@ export default function ProductoForm({ inicial, codigoPrecargado, guardando, onS
         <label className="label">Foto de la prenda</label>
 
         {imagenPreview ? (
-          <div className="relative group rounded-xl overflow-hidden border border-white/10"
+          <div className="relative group rounded-xl overflow-hidden border border-black/10"
             style={{ height: '12rem' }}>
             <img
               src={imagenPreview}
@@ -293,13 +293,13 @@ export default function ProductoForm({ inicial, codigoPrecargado, guardando, onS
         ) : (
           <div className="grid grid-cols-2 gap-2">
             <button type="button" onClick={() => cameraRef.current?.click()}
-              className="btn-ghost flex-col !py-6 !rounded-xl gap-2 border-dashed !border-white/15 hover:!border-ember/40">
+              className="btn-ghost flex-col !py-6 !rounded-xl gap-2 border-dashed !border-black/[0.15] hover:!border-ember/40">
               <TakePhotoIcon />
               <span className="text-xs font-semibold">Tomar foto</span>
               <span className="text-[10px] text-muted">Cámara trasera</span>
             </button>
             <button type="button" onClick={() => galleryRef.current?.click()}
-              className="btn-ghost flex-col !py-6 !rounded-xl gap-2 border-dashed !border-white/15 hover:!border-ember/40">
+              className="btn-ghost flex-col !py-6 !rounded-xl gap-2 border-dashed !border-black/[0.15] hover:!border-ember/40">
               <GalleryIcon />
               <span className="text-xs font-semibold">Subir imagen</span>
               <span className="text-[10px] text-muted">Galería / archivo</span>
