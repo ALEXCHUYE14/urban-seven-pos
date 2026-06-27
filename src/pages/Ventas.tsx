@@ -317,7 +317,7 @@ export default function Ventas() {
               {topProductos.length === 0 ? (
                 <p className="text-muted text-sm py-8 text-center">Sin datos en este período.</p>
               ) : (
-                <ul className="divide-y" style={{ '--tw-divide-opacity': '1' } as React.CSSProperties}>
+                <ul className="divide-y" style={{ borderColor: 'var(--c-divider)' }}>
                   {topProductos.map((p, i) => (
                     <li key={p.nombre}
                       className="flex items-center gap-3 px-5 py-3"

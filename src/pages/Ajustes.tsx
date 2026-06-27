@@ -65,7 +65,8 @@ export default function Ajustes() {
   const { toast } = useToast()
   const [tab, setTab] = useState<Tab>('impresion')
   const [ticketPrueba, setTicketPrueba] = useState<TicketData | null>(null)
-  const [copiado, setCopiado] = useState(false)
+  const [copiado,   setCopiado]   = useState(false)
+  const [copiadoV3, setCopiadoV3] = useState(false)
 
   const lanzarPrueba = () => {
     setTicketPrueba({ ...TICKET_PRUEBA, cajero: user?.email ?? 'test@urbanseven.pe' })
@@ -78,6 +79,17 @@ export default function Ajustes() {
       setCopiado(true)
       toast('SQL copiado al portapapeles', 'ok')
       setTimeout(() => setCopiado(false), 2500)
+    } catch {
+      toast('No se pudo copiar. Selecciona el texto manualmente.', 'error')
+    }
+  }
+
+  const copiarSQLv3 = async () => {
+    try {
+      await navigator.clipboard.writeText(SQL_MIGRACION_V3.trim())
+      setCopiadoV3(true)
+      toast('SQL v3 copiado al portapapeles', 'ok')
+      setTimeout(() => setCopiadoV3(false), 2500)
     } catch {
       toast('No se pudo copiar. Selecciona el texto manualmente.', 'error')
     }
@@ -238,7 +250,7 @@ export default function Ajustes() {
         <div className="space-y-4 animate-fade-in">
           <Section
             title="Migración v2 — Imágenes de productos"
-            subtitle="Ejecuta este SQL en el Editor SQL de Supabase para habilitar la columna imagen_url y el bucket de Storage."
+            subtitle="Habilita la columna imagen_url y el bucket de Supabase Storage."
           >
             <div className="rounded-xl overflow-hidden"
               style={{ border: '1px solid var(--c-border-lg)' }}>
@@ -269,6 +281,42 @@ export default function Ajustes() {
                 <li>2. Menú lateral: <span className="text-bone">SQL Editor</span> → <span className="text-bone">New query</span>.</li>
                 <li>3. Pega el SQL de arriba y presiona <span className="text-bone">Run ▶</span>.</li>
                 <li>4. Verifica que el bucket <span className="text-bone font-mono">products</span> aparezca en <span className="text-bone">Storage</span>.</li>
+              </ol>
+            </div>
+          </Section>
+
+          <Section
+            title="Migración v3 — CRM, Descuentos e Historial de stock"
+            subtitle="Agrega las tablas clientes, ajustes_stock, columnas de descuento en ventas y la función aplicar_descuento."
+          >
+            <div className="rounded-xl overflow-hidden"
+              style={{ border: '1px solid var(--c-border-lg)' }}>
+              <div className="flex items-center justify-between px-4 py-2.5"
+                style={{ background: 'var(--c-surface-sm)', borderBottom: '1px solid var(--c-border)' }}>
+                <span className="text-[11px] font-mono text-stone">migration_v3_features.sql</span>
+                <button
+                  onClick={copiarSQLv3}
+                  className={`flex items-center gap-1.5 text-[11px] font-semibold transition-colors
+                    ${copiadoV3 ? 'text-success' : 'text-stone hover:text-bone'}`}
+                >
+                  {copiadoV3 ? <><CheckIcon /> Copiado</> : <><CopyIcon /> Copiar</>}
+                </button>
+              </div>
+              <pre className="text-[11.5px] font-mono text-stone/90 p-4 overflow-x-auto leading-relaxed max-h-64"
+                style={{ background: 'var(--c-surface-sm)', borderRadius: '0.75rem' }}>
+                <code>{SQL_MIGRACION_V3.trim()}</code>
+              </pre>
+            </div>
+
+            <div className="rounded-xl p-4 space-y-2"
+              style={{ background: 'rgba(63,125,92,0.08)', border: '1px solid rgba(63,125,92,0.2)' }}>
+              <p className="text-xs font-bold text-success flex items-center gap-2">
+                <CheckIcon /> Aplicar después de v2
+              </p>
+              <ol className="text-xs text-stone space-y-1 pl-1">
+                <li>1. Asegúrate de haber aplicado la migración v2 primero.</li>
+                <li>2. Copia este SQL y ejecútalo en <span className="text-bone">SQL Editor → New query</span>.</li>
+                <li>3. Verifica que las tablas <span className="text-bone font-mono">clientes</span> y <span className="text-bone font-mono">ajustes_stock</span> aparezcan en <span className="text-bone">Table Editor</span>.</li>
               </ol>
             </div>
           </Section>
@@ -326,6 +374,112 @@ DROP POLICY IF EXISTS "products_auth_delete" ON storage.objects;
 CREATE POLICY "products_auth_delete" ON storage.objects
   FOR DELETE TO authenticated
   USING (bucket_id = 'products');
+`
+
+/* ─── SQL migración v3 ───────────────────────────────────────────── */
+const SQL_MIGRACION_V3 = `
+-- ================================================================
+-- URBAN SEVEN POS · Migración v3
+-- CRM (clientes), historial de stock (ajustes_stock),
+-- descuentos en ventas y función aplicar_descuento
+-- Ejecutar en: Supabase Dashboard > SQL Editor
+-- ================================================================
+
+-- 1. Tabla de clientes (CRM básico)
+CREATE TABLE IF NOT EXISTS public.clientes (
+  id         uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  nombre     text NOT NULL,
+  telefono   text,
+  email      text,
+  notas      text,
+  created_at timestamptz NOT NULL DEFAULT now(),
+  updated_at timestamptz NOT NULL DEFAULT now()
+);
+ALTER TABLE public.clientes ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "clientes_auth_all" ON public.clientes;
+CREATE POLICY "clientes_auth_all" ON public.clientes
+  TO authenticated USING (true) WITH CHECK (true);
+
+-- 2. Historial de ajustes de stock
+CREATE TABLE IF NOT EXISTS public.ajustes_stock (
+  id             uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  producto_id    uuid NOT NULL REFERENCES public.productos(id) ON DELETE CASCADE,
+  usuario_id     uuid NOT NULL REFERENCES auth.users(id),
+  stock_anterior integer NOT NULL,
+  stock_nuevo    integer NOT NULL,
+  delta          integer NOT NULL,
+  motivo         text NOT NULL DEFAULT 'ajuste_manual',
+  created_at     timestamptz NOT NULL DEFAULT now()
+);
+ALTER TABLE public.ajustes_stock ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "ajustes_read"   ON public.ajustes_stock;
+DROP POLICY IF EXISTS "ajustes_insert" ON public.ajustes_stock;
+CREATE POLICY "ajustes_read"   ON public.ajustes_stock FOR SELECT TO authenticated USING (true);
+CREATE POLICY "ajustes_insert" ON public.ajustes_stock FOR INSERT TO authenticated WITH CHECK (true);
+
+-- 3. Columnas de descuento y cliente en ventas
+ALTER TABLE public.ventas
+  ADD COLUMN IF NOT EXISTS descuento_pct   numeric(5,2)  NOT NULL DEFAULT 0,
+  ADD COLUMN IF NOT EXISTS descuento_monto numeric(12,2) NOT NULL DEFAULT 0,
+  ADD COLUMN IF NOT EXISTS cliente_id      uuid REFERENCES public.clientes(id);
+
+-- 4. Función para aplicar descuento post-venta (no modifica procesar_venta)
+CREATE OR REPLACE FUNCTION public.aplicar_descuento(
+  p_venta_id      uuid,
+  p_descuento_pct numeric
+)
+RETURNS jsonb
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+DECLARE
+  v               record;
+  nuevo_total     numeric;
+  nuevo_subtotal  numeric;
+  nuevo_igv       numeric;
+  desc_monto      numeric;
+  nuevo_vuelto    numeric;
+BEGIN
+  SELECT * INTO v FROM public.ventas WHERE id = p_venta_id FOR UPDATE;
+  IF NOT FOUND THEN RAISE EXCEPTION 'Venta no encontrada'; END IF;
+
+  -- Calcular descuento sobre el total bruto original
+  desc_monto    := round(v.total * p_descuento_pct / 100, 2);
+  nuevo_total   := v.total - desc_monto;
+  nuevo_subtotal := round(nuevo_total / 1.18, 2);
+  nuevo_igv      := nuevo_total - nuevo_subtotal;
+  nuevo_vuelto   := CASE WHEN v.monto_recibido IS NOT NULL
+                         THEN v.monto_recibido - nuevo_total
+                         ELSE NULL END;
+
+  UPDATE public.ventas SET
+    descuento_pct   = p_descuento_pct,
+    descuento_monto = desc_monto,
+    total           = nuevo_total,
+    subtotal        = nuevo_subtotal,
+    igv             = nuevo_igv,
+    vuelto          = nuevo_vuelto
+  WHERE id = p_venta_id;
+
+  -- Ajustar totales en la caja
+  UPDATE public.cajas SET
+    total_ventas = total_ventas - desc_monto,
+    total_efectivo = CASE WHEN v.metodo_pago = 'efectivo' THEN total_efectivo - desc_monto ELSE total_efectivo END,
+    total_yape     = CASE WHEN v.metodo_pago = 'yape'     THEN total_yape     - desc_monto ELSE total_yape     END,
+    total_tarjeta  = CASE WHEN v.metodo_pago = 'tarjeta'  THEN total_tarjeta  - desc_monto ELSE total_tarjeta  END
+  WHERE id = v.caja_id;
+
+  RETURN jsonb_build_object(
+    'total',           nuevo_total,
+    'subtotal',        nuevo_subtotal,
+    'igv',             nuevo_igv,
+    'descuento_monto', desc_monto,
+    'vuelto',          nuevo_vuelto
+  );
+END;
+$$;
+
+GRANT EXECUTE ON FUNCTION public.aplicar_descuento TO authenticated;
 `
 
 /* ─── Sub-componentes ─── */

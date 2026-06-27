@@ -92,10 +92,10 @@ export function CajaProvider({ children }: { children: ReactNode }) {
       .single()
 
     if (error) {
-      // Violación del índice único = ya hay una caja abierta
+      // Violación del índice único = ya hay una caja abierta: reconciliar y continuar sin error
       if (error.code === '23505') {
         await refrescar()
-        return { error: 'Ya existe una caja abierta para este usuario.' }
+        return { error: null }
       }
       return { error: error.message }
     }

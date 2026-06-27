@@ -39,7 +39,7 @@ export default function Dashboard() {
         setLoading(false)
       }
     }
-    if (!cargando) cargar()
+    if (!cargando) void cargar()
     return () => { vivo = false }
   }, [caja, abierta, cargando])
 

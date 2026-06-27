@@ -23,6 +23,31 @@ interface AjusteConProducto {
   productos: { nombre: string; codigo_qr: string } | null
 }
 
+function parsearCSV(texto: string): ProductoInput[] {
+  const lineas = texto.trim().split(/\r?\n/)
+  if (lineas.length < 2) return []
+  const sep = lineas[0].includes(';') ? ';' : ','
+  const encabezados = lineas[0].split(sep).map(s => s.trim().toLowerCase().replace(/"/g, ''))
+  return lineas.slice(1).flatMap((linea) => {
+    const valores = linea.split(sep).map(s => s.trim().replace(/"/g, ''))
+    const row: Record<string, string> = {}
+    encabezados.forEach((col, i) => { row[col] = valores[i] ?? '' })
+    if (!row['codigo_qr'] || !row['nombre']) return []
+    return [{
+      codigo_qr:     row['codigo_qr'],
+      nombre:        row['nombre'],
+      categoria:     row['categoria'] || 'General',
+      talla:         row['talla'] || 'U',
+      color:         row['color'] || '',
+      precio_compra: Number(row['precio_compra'] || row['costo'] || 0),
+      precio_venta:  Number(row['precio_venta'] || row['precio'] || 0),
+      stock:         Number(row['stock'] || 0),
+      stock_minimo:  Number(row['stock_minimo'] || row['minimo'] || 3),
+      imagen_url:    null
+    }]
+  })
+}
+
 export default function Inventario() {
   const { user } = useAuth()
   const { toast } = useToast()
@@ -105,9 +130,9 @@ export default function Inventario() {
     const { error } = await supabase.from('productos').update({ stock: nuevo }).eq('id', p.id)
     if (error) { toast(error.message, 'error'); void cargar(); return }
 
-    // Log del ajuste (sin bloquear UI si falla)
+    // Log del ajuste (no bloquea UI si falla — solo avisa)
     if (user?.id) {
-      await supabase.from('ajustes_stock').insert({
+      const { error: logErr } = await supabase.from('ajustes_stock').insert({
         producto_id:    p.id,
         usuario_id:     user.id,
         stock_anterior: stockAnterior,
@@ -115,6 +140,7 @@ export default function Inventario() {
         delta,
         motivo:         'ajuste_manual'
       })
+      if (logErr) toast('Stock actualizado (no se pudo guardar en historial)', 'info')
     }
   }
 
@@ -142,31 +168,6 @@ export default function Inventario() {
     }
     reader.readAsText(file, 'UTF-8')
     e.target.value = ''
-  }
-
-  const parsearCSV = (texto: string): ProductoInput[] => {
-    const lineas = texto.trim().split(/\r?\n/)
-    if (lineas.length < 2) return []
-    const sep = lineas[0].includes(';') ? ';' : ','
-    const encabezados = lineas[0].split(sep).map(s => s.trim().toLowerCase().replace(/"/g, ''))
-    return lineas.slice(1).flatMap((linea) => {
-      const valores = linea.split(sep).map(s => s.trim().replace(/"/g, ''))
-      const row: Record<string, string> = {}
-      encabezados.forEach((col, i) => { row[col] = valores[i] ?? '' })
-      if (!row['codigo_qr'] || !row['nombre']) return []
-      return [{
-        codigo_qr:     row['codigo_qr'],
-        nombre:        row['nombre'],
-        categoria:     row['categoria'] || 'General',
-        talla:         row['talla'] || 'U',
-        color:         row['color'] || '',
-        precio_compra: Number(row['precio_compra'] || row['costo'] || 0),
-        precio_venta:  Number(row['precio_venta'] || row['precio'] || 0),
-        stock:         Number(row['stock'] || 0),
-        stock_minimo:  Number(row['stock_minimo'] || row['minimo'] || 3),
-        imagen_url:    null
-      }]
-    })
   }
 
   const importarCSV = async () => {

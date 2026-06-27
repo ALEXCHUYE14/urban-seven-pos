@@ -31,16 +31,13 @@ export function ToastProvider({ children }: { children: ReactNode }) {
             className="pointer-events-auto animate-slide-up max-w-xs w-full flex items-center gap-3
                        rounded-xl px-4 py-3 text-sm font-semibold"
             style={{
-              background:
-                t.tipo === 'ok'    ? 'rgba(236,252,243,0.99)' :
-                t.tipo === 'error' ? 'rgba(254,241,240,0.99)' :
-                                     'rgba(255,255,255,0.99)',
+              background: 'var(--c-card)',
               border:
-                t.tipo === 'ok'    ? '1px solid rgba(42,112,72,0.3)'  :
-                t.tipo === 'error' ? '1px solid rgba(194,69,47,0.3)'  :
-                                     '1px solid rgba(0,0,0,0.1)',
-              color: '#1C1A17',
-              boxShadow: '0 4px 16px -4px rgba(0,0,0,0.12)'
+                t.tipo === 'ok'    ? '1px solid rgba(42,112,72,0.4)'   :
+                t.tipo === 'error' ? '1px solid rgba(194,69,47,0.4)'   :
+                                     '1px solid var(--c-border)',
+              color: 'rgb(var(--bone))',
+              boxShadow: '0 4px 20px -4px rgba(0,0,0,0.28)'
             }}
           >
             <span className={

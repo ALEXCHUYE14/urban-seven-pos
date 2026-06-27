@@ -1,21 +1,17 @@
-// Generación de PDF con jsPDF · reporte diario y ticket 80mm
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
 import { TIENDA } from '../lib/constants'
 import { money, fechaLarga, folio } from './format'
 import type { Caja, TicketData, VentaConDetalle } from '../types'
 
-// Paleta corporativa en RGB para el PDF
 const C = {
-  ink: [20, 19, 18] as [number, number, number],
-  ember: [224, 86, 30] as [number, number, number],
-  stone: [120, 116, 108] as [number, number, number],
-  line: [220, 216, 208] as [number, number, number]
+  ink:     [20, 19, 18]    as [number, number, number],
+  ember:   [224, 86, 30]   as [number, number, number],
+  success: [42, 112, 72]   as [number, number, number],
+  stone:   [120, 116, 108] as [number, number, number],
+  line:    [220, 216, 208] as [number, number, number]
 }
 
-/**
- * Reporte diario de cierre de caja — A4, diseño corporativo limpio.
- */
 export function generarReporteDiarioPDF(
   caja: Caja,
   ventas: VentaConDetalle[],
@@ -25,7 +21,6 @@ export function generarReporteDiarioPDF(
   const W = doc.internal.pageSize.getWidth()
   const M = 16
 
-  // --- Encabezado: banda de marca ---
   doc.setFillColor(...C.ink)
   doc.rect(0, 0, W, 34, 'F')
   doc.setFillColor(...C.ember)
@@ -40,7 +35,6 @@ export function generarReporteDiarioPDF(
   doc.setTextColor(168, 162, 150)
   doc.text(TIENDA.direccion, M, 24)
   doc.text('Reporte de cierre de caja', M, 29)
-
   doc.setTextColor(244, 241, 234)
   doc.setFont('helvetica', 'bold')
   doc.setFontSize(28)
@@ -48,7 +42,6 @@ export function generarReporteDiarioPDF(
 
   let y = 46
 
-  // --- Metadatos del turno ---
   doc.setTextColor(...C.ink)
   doc.setFontSize(10)
   doc.setFont('helvetica', 'bold')
@@ -59,11 +52,11 @@ export function generarReporteDiarioPDF(
   y += 7
 
   const meta: [string, string][] = [
-    ['Cajero', cajeroEmail],
-    ['Apertura', fechaLarga(caja.abierta_en)],
-    ['Cierre', caja.cerrada_en ? fechaLarga(caja.cerrada_en) : '—'],
+    ['Cajero',        cajeroEmail],
+    ['Apertura',      fechaLarga(caja.abierta_en)],
+    ['Cierre',        caja.cerrada_en ? fechaLarga(caja.cerrada_en) : '—'],
     ['Monto inicial', money(caja.monto_inicial)],
-    ['N° de ventas', String(caja.num_ventas)]
+    ['N° de ventas',  String(caja.num_ventas)]
   ]
   doc.setFontSize(9)
   meta.forEach(([k, v]) => {
@@ -73,18 +66,16 @@ export function generarReporteDiarioPDF(
     doc.text(v, M + 40, y)
     y += 6
   })
-
   y += 4
 
-  // --- Totales por método de pago (cuadro destacado) ---
   const boxY = y
   doc.setFillColor(248, 246, 241)
   doc.roundedRect(M, boxY, W - M * 2, 26, 2, 2, 'F')
   const cols = [
-    ['Efectivo', money(caja.total_efectivo)],
-    ['Tarjeta', money(caja.total_tarjeta)],
-    ['Yape/Transf.', money(caja.total_yape)],
-    ['TOTAL', money(caja.total_ventas)]
+    ['Efectivo',   money(caja.total_efectivo)],
+    ['Tarjeta',    money(caja.total_tarjeta)],
+    ['Yape',       money(caja.total_yape)],
+    ['TOTAL',      money(caja.total_ventas)]
   ]
   const cw = (W - M * 2) / cols.length
   cols.forEach(([k, v], i) => {
@@ -99,7 +90,6 @@ export function generarReporteDiarioPDF(
   })
   y = boxY + 36
 
-  // --- Tabla de ventas ---
   const rows = ventas.map((v) => [
     folio(v.correlativo),
     new Date(v.created_at).toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' }),
@@ -120,7 +110,6 @@ export function generarReporteDiarioPDF(
     margin: { left: M, right: M }
   })
 
-  // --- Pie ---
   const pageH = doc.internal.pageSize.getHeight()
   doc.setFontSize(8); doc.setTextColor(...C.stone)
   doc.text(
@@ -131,15 +120,13 @@ export function generarReporteDiarioPDF(
   doc.save(`reporte-caja-${new Date().toISOString().slice(0, 10)}.pdf`)
 }
 
-/**
- * Ticket de venta en formato 80mm como PDF descargable (corporativo).
- */
 export function generarTicketPDF(t: TicketData): void {
-  // Altura dinámica según cantidad de líneas
-  const lineH = 4.2
-  const baseH = 78
-  const h = baseH + t.items.length * lineH * 1.6
-  const doc = new jsPDF({ unit: 'mm', format: [80, h] })
+  // Altura dinámica: líneas de descuento añaden espacio extra
+  const lineH  = 4.2
+  const extraH = (t.descuento_pct && t.descuento_pct > 0) ? 5 : 0
+  const baseH  = 78 + extraH
+  const h      = baseH + t.items.length * lineH * 1.6
+  const doc    = new jsPDF({ unit: 'mm', format: [80, h] })
   const W = 80
   const M = 5
   let y = 8
@@ -165,7 +152,6 @@ export function generarTicketPDF(t: TicketData): void {
   doc.setLineDashPattern([], 0)
   y += 4
 
-  // Cabecera de columnas
   doc.setFontSize(7)
   doc.setTextColor(...C.ink)
   doc.setFont('helvetica', 'bold')
@@ -195,22 +181,43 @@ export function generarTicketPDF(t: TicketData): void {
   doc.setLineDashPattern([], 0)
   y += 5
 
-  const totRow = (label: string, val: string, bold = false, big = false) => {
+  const totRow = (
+    label: string,
+    val: string,
+    bold = false,
+    big  = false,
+    color?: [number, number, number]
+  ) => {
     doc.setFont('helvetica', bold ? 'bold' : 'normal')
     doc.setFontSize(big ? 11 : 8)
+    if (color) doc.setTextColor(...color)
     doc.text(label, M, y)
     doc.text(val, W - M, y, { align: 'right' })
     y += big ? 6 : 4.4
+    if (color) doc.setTextColor(...C.ink)
   }
+
   totRow('Op. gravada', money(t.subtotal))
-  totRow('IGV (18%)', money(t.igv))
+  totRow('IGV (18%)',   money(t.igv))
+
+  // Línea de descuento — solo si la venta tuvo un descuento aplicado
+  if (t.descuento_pct && t.descuento_pct > 0) {
+    totRow(
+      `Descuento (${t.descuento_pct}%)`,
+      `- ${money(t.descuento_monto ?? 0)}`,
+      true,
+      false,
+      C.success
+    )
+  }
+
   doc.setTextColor(...C.ember)
   totRow('TOTAL', money(t.total), true, true)
   doc.setTextColor(...C.ink)
 
   totRow('Pago', t.metodo_pago.toUpperCase())
   if (t.monto_recibido != null) totRow('Recibido', money(t.monto_recibido))
-  if (t.vuelto != null) totRow('Vuelto', money(t.vuelto))
+  if (t.vuelto != null)         totRow('Vuelto',   money(t.vuelto))
 
   y += 2
   doc.setLineDashPattern([1, 1], 0)

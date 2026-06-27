@@ -43,8 +43,10 @@ export default function POS() {
   // Cargar clientes cuando se abre el modal de cobro
   useEffect(() => {
     if (!cobroAbierto) return
+    let cancelado = false
     supabase.from('clientes').select('id,nombre,telefono').order('nombre')
-      .then(({ data }) => { if (data) setClientes(data as ClienteMinimo[]) })
+      .then(({ data }) => { if (!cancelado && data) setClientes(data as ClienteMinimo[]) })
+    return () => { cancelado = true }
   }, [cobroAbierto])
 
   // Categorías únicas derivadas del catálogo cargado
@@ -52,6 +54,13 @@ export default function POS() {
     () => [...new Set(productos.map(p => p.categoria))].sort(),
     [productos]
   )
+
+  // Si la categoría activa ya no existe en el catálogo (ej: post-venta sin stock), limpiarla
+  useEffect(() => {
+    if (filtroCat && categorias.length > 0 && !categorias.includes(filtroCat)) {
+      setFiltroCat('')
+    }
+  }, [categorias, filtroCat])
 
   const filtrados = useMemo(() => {
     const q = busqueda.trim().toLowerCase()
@@ -104,7 +113,8 @@ export default function POS() {
     const limpio = codigo.trim()
     const enCatalogo = productos.find((p) => p.codigo_qr === limpio)
     if (enCatalogo) { agregar(enCatalogo); toast(`+ ${enCatalogo.nombre}`, 'ok'); return }
-    const { data } = await supabase.from('productos').select('*').eq('codigo_qr', limpio).maybeSingle()
+    const { data, error } = await supabase.from('productos').select('*').eq('codigo_qr', limpio).maybeSingle()
+    if (error) { toast('Error de red al buscar producto', 'error'); return }
     if (data && (data as Producto).stock > 0) {
       agregar(data as Producto); toast(`+ ${(data as Producto).nombre}`, 'ok')
     } else if (data) {
@@ -165,9 +175,11 @@ export default function POS() {
       }
     }
 
-    // Vincular cliente si fue seleccionado
+    // Vincular cliente si fue seleccionado (fallo no bloquea — la venta ya está registrada)
     if (clienteId) {
-      await supabase.from('ventas').update({ cliente_id: clienteId }).eq('id', res.venta_id)
+      const { error: ce } = await supabase
+        .from('ventas').update({ cliente_id: clienteId }).eq('id', res.venta_id)
+      if (ce) toast('Venta registrada. No se pudo vincular el cliente.', 'info')
     }
 
     setProcesando(false)
