@@ -23,24 +23,25 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-ink">
-
-      {/* Logo en esquina superior izquierda */}
-      <header className="p-5 flex items-center">
-        <img
-          src="/img/logo.png"
-          alt="URBAN SEVEN"
-          className="h-10 w-auto object-contain select-none dark:invert"
-        />
-      </header>
+    <div className="min-h-screen flex bg-ink">
 
       <div className="flex-1 grid lg:grid-cols-2">
 
-        {/* Panel izquierdo — identidad de marca (siempre oscuro) */}
+        {/* Panel izquierdo — identidad de marca con logo de fondo */}
         <div className="hidden lg:flex relative items-center justify-center overflow-hidden"
           style={{ borderRight: '1px solid rgba(255,255,255,0.08)' }}>
+
+          {/* Logo como imagen de fondo */}
+          <img
+            src="/img/logo.png"
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
+          />
+          {/* Overlay oscuro para mantener legibilidad del texto */}
           <div className="absolute inset-0"
-            style={{ background: 'linear-gradient(135deg, #1A1916 0%, #141312 100%)' }} />
+            style={{ background: 'linear-gradient(135deg, rgba(20,19,18,0.82) 0%, rgba(14,13,12,0.78) 100%)' }} />
+
           <span className="jersey-number absolute -right-6 -bottom-20 select-none"
             style={{ fontSize: '22rem', color: 'transparent',
               WebkitTextStroke: '2px rgba(244,241,234,0.05)' }}>
@@ -74,7 +75,7 @@ export default function Login() {
           </div>
         </div>
 
-        {/* Panel derecho — formulario con tarjeta premium */}
+        {/* Panel derecho — formulario */}
         <div className="flex items-center justify-center p-4 sm:p-8">
           <div className="w-full max-w-sm">
 
