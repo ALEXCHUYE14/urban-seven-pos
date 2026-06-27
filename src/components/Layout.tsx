@@ -61,6 +61,16 @@ export default function Layout({ children }: { children: ReactNode }) {
               {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
             </button>
 
+            {/* Salir — ícono visible solo en móvil */}
+            <button
+              onClick={salir}
+              className="sm:hidden btn-ghost !p-2 !rounded-lg"
+              title="Cerrar sesión"
+              aria-label="Cerrar sesión"
+            >
+              <LogoutIcon />
+            </button>
+
             {/* Email + salir (desktop) */}
             <div className="hidden sm:flex items-center gap-1">
               <span className="text-[11px] text-muted max-w-[140px] truncate px-1">
