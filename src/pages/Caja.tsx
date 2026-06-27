@@ -113,7 +113,7 @@ export default function Caja() {
             <div className="grid grid-cols-3 gap-2">
               <MiniMetric label="Efectivo"    value={money(caja.total_efectivo)} />
               <MiniMetric label="Tarjeta"     value={money(caja.total_tarjeta)} />
-              <MiniMetric label="Yape/Transf" value={money(caja.total_yape)} />
+              <MiniMetric label="Yape" value={money(caja.total_yape)} />
             </div>
 
             {/* Acciones */}

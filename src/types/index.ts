@@ -2,6 +2,27 @@
 
 export type MetodoPago = 'efectivo' | 'tarjeta' | 'yape'
 
+export interface Cliente {
+  id: string
+  nombre: string
+  telefono: string | null
+  email: string | null
+  notas: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface AjusteStock {
+  id: string
+  producto_id: string
+  usuario_id: string
+  stock_anterior: number
+  stock_nuevo: number
+  delta: number
+  motivo: string
+  created_at: string
+}
+
 export interface Producto {
   id: string
   codigo_qr: string
@@ -53,6 +74,9 @@ export interface Venta {
   subtotal: number
   igv: number
   total: number
+  descuento_pct: number
+  descuento_monto: number
+  cliente_id: string | null
   metodo_pago: MetodoPago
   monto_recibido: number | null
   vuelto: number | null
@@ -95,6 +119,8 @@ export interface TicketData {
   subtotal: number
   igv: number
   total: number
+  descuento_pct?: number
+  descuento_monto?: number
   metodo_pago: MetodoPago
   monto_recibido?: number | null
   vuelto?: number | null

@@ -12,6 +12,7 @@ import Inventario from './pages/Inventario'
 import Ventas from './pages/Ventas'
 import Caja from './pages/Caja'
 import Ajustes from './pages/Ajustes'
+import Clientes from './pages/Clientes'
 
 function Splash() {
   return (
@@ -69,6 +70,7 @@ export default function App() {
               <Route path="/inventario" element={<Inventario />} />
               <Route path="/ventas"     element={<Ventas />} />
               <Route path="/caja"       element={<Caja />} />
+              <Route path="/clientes"   element={<Clientes />} />
               <Route path="/ajustes"    element={<Ajustes />} />
             </Route>
 

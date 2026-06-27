@@ -67,6 +67,12 @@ export default function TicketModal({ open, onClose, ticket }: Props) {
             <hr className="t-hr" />
             <div className="t-row t-small"><span>Op. gravada</span><span>{money(ticket.subtotal)}</span></div>
             <div className="t-row t-small"><span>IGV (18%)</span><span>{money(ticket.igv)}</span></div>
+            {ticket.descuento_pct != null && ticket.descuento_pct > 0 && (
+              <div className="t-row t-small" style={{ color: '#2A7048', fontWeight: 700 }}>
+                <span>Descuento ({ticket.descuento_pct}%)</span>
+                <span>- {money(ticket.descuento_monto ?? 0)}</span>
+              </div>
+            )}
             <div className="t-row" style={{ fontSize: 14, fontWeight: 700, marginTop: 4 }}>
               <span>TOTAL</span><span>{money(ticket.total)}</span>
             </div>
