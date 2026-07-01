@@ -49,77 +49,146 @@ function buildTicketHTML(t: TicketData): string {
 <meta charset="UTF-8">
 <title>Ticket ${fol}</title>
 <style>
-  /* La altura se sobreescribe dinámicamente desde React antes de imprimir */
-  @page { size: 80mm auto; margin: 0; }
+  /* ── Reset absoluto: quita todo margen del navegador ── */
+  @page {
+    size: 80mm auto;
+    margin: 0mm 0mm 0mm 0mm;
+  }
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 
   html {
     width: 80mm;
+    margin: 0 !important;
+    padding: 0 !important;
     background: #fff;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
+
   body {
     width: 80mm;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 10.5px;
-    line-height: 1.42;
-    color: #111;
+    margin: 0 !important;
+    padding: 0 !important;
+    /* Arial rinde mejor que Courier en térmicas: bordes más definidos */
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    line-height: 1.45;
+    color: #000;
     background: #fff;
   }
 
   /* ══ Contenedor principal ══ */
-  .tk { padding: 4mm 4mm 8mm; }
+  .tk { padding: 3mm 3.5mm 5mm; }
 
   /* ══ Cabecera ══ */
-  .hd       { text-align: center; padding-bottom: 3mm; }
-  .brand    { font-family: Arial Black, Arial, sans-serif; font-size: 22px; font-weight: 900; letter-spacing: -0.5px; line-height: 1; margin-bottom: 1.5mm; }
-  .addr     { font-size: 8px; color: #555; line-height: 1.4; }
-  .doctype  { display: inline-block; margin-top: 2.5mm; font-size: 7.5px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; border: 1.5px solid #000; padding: 0.8mm 3mm; }
+  .hd { text-align: center; padding-bottom: 2.5mm; }
+  .brand {
+    font-family: 'Arial Black', Arial, sans-serif;
+    font-size: 23px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    line-height: 1;
+    margin-bottom: 1.5mm;
+  }
+  .addr { font-size: 9.5px; color: #444; line-height: 1.4; }
+  .doctype {
+    display: inline-block;
+    margin-top: 2mm;
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border: 1.5px solid #000;
+    padding: 0.8mm 3mm;
+  }
 
   /* ══ Número de folio ══ */
-  .folio     { text-align: center; padding: 2.5mm 0; }
-  .folio-lbl { font-size: 7px; color: #999; text-transform: uppercase; letter-spacing: 2.5px; }
-  .folio-num { font-family: Arial Black, Arial, sans-serif; font-size: 19px; font-weight: 900; letter-spacing: 3px; line-height: 1.1; }
+  .folio { text-align: center; padding: 2mm 0; }
+  .folio-lbl { font-size: 8px; color: #888; text-transform: uppercase; letter-spacing: 2.5px; }
+  .folio-num {
+    font-family: 'Arial Black', Arial, sans-serif;
+    font-size: 21px;
+    font-weight: 900;
+    letter-spacing: 4px;
+    line-height: 1.15;
+  }
 
   /* ══ Separadores ══ */
-  .dash  { border: none; border-top: 1px dashed #bbb; margin: 2.5mm 0; }
-  .solid { border: none; border-top: 2px solid #000; margin: 1.5mm 0; }
+  .dash  { border: none; border-top: 1px dashed #aaa; margin: 2mm 0; }
+  .solid { border: none; border-top: 2px solid #000; margin: 1mm 0; }
 
   /* ══ Filas clave → valor ══ */
-  .row   { display: flex; justify-content: space-between; align-items: baseline; gap: 3px; padding: 0.9mm 0; font-size: 9.5px; }
-  .d     { color: #666; }
-  .g     { color: #1a6e38; font-weight: 700; }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 4px;
+    padding: 0.9mm 0;
+    font-size: 10.5px;
+  }
+  .d { color: #555; }
+  .g { color: #1a6e38; font-weight: 700; }
 
   /* ══ Tabla de productos ══ */
   table  { width: 100%; border-collapse: collapse; margin: 1mm 0 0.5mm; }
-  th     { font-size: 8.5px; font-weight: 700; text-align: left; padding-bottom: 2.5px; border-bottom: 2px solid #000; }
+  th {
+    font-size: 9px;
+    font-weight: 700;
+    text-align: left;
+    padding-bottom: 2.5px;
+    border-bottom: 2px solid #000;
+  }
   th:last-child { text-align: right; }
-  td     { font-size: 9.5px; vertical-align: top; padding: 2.5px 0; line-height: 1.38; }
-  td.r   { text-align: right; white-space: nowrap; padding-left: 5px; }
-  .sub   { font-size: 7.5px; color: #666; margin-top: 0.8mm; }
+  td { font-size: 10.5px; vertical-align: top; padding: 2.5px 0; line-height: 1.4; }
+  td.r { text-align: right; white-space: nowrap; padding-left: 5px; }
+  .sub { font-size: 9px; color: #666; margin-top: 0.8mm; }
 
   /* ══ Bloque de totales ══ */
-  .totals    { margin: 0.5mm 0 1.5mm; }
-  .row-sm    { display: flex; justify-content: space-between; font-size: 9px; padding: 0.9mm 0; }
-  .row-sm .d { color: #666; }
+  .totals { margin: 0.5mm 0 1mm; }
+  .row-sm { display: flex; justify-content: space-between; font-size: 10.5px; padding: 0.8mm 0; }
+  .row-sm .d { color: #555; }
   .total-big {
-    display: flex; justify-content: space-between; align-items: baseline;
-    border-top: 2.5px solid #000; padding-top: 2.5mm; margin-top: 1.5mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-top: 2.5px solid #000;
+    padding-top: 2.5mm;
+    margin-top: 1.5mm;
   }
-  .total-big .lbl { font-family: Arial Black, Arial, sans-serif; font-size: 13px; font-weight: 900; }
-  .total-big .amt { font-family: Arial Black, Arial, sans-serif; font-size: 21px; font-weight: 900; }
+  .total-big .lbl {
+    font-family: 'Arial Black', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 900;
+  }
+  .total-big .amt {
+    font-family: 'Arial Black', Arial, sans-serif;
+    font-size: 23px;
+    font-weight: 900;
+  }
 
   /* ══ Método de pago ══ */
-  .pay { font-family: Arial Black, Arial, sans-serif; font-size: 12px; font-weight: 900; }
+  .pay {
+    font-family: 'Arial Black', Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 900;
+  }
 
   /* ══ Pie de página ══ */
-  .footer  { text-align: center; padding-top: 3mm; border-top: 1px dashed #bbb; margin-top: 3.5mm; }
-  .thanks  { font-family: Arial Black, Arial, sans-serif; font-size: 12px; font-weight: 900; letter-spacing: 0.5px; }
-  .policy  { font-size: 8px; color: #555; margin: 2mm 0 1.5mm; line-height: 1.5; }
+  .footer { text-align: center; padding-top: 2.5mm; border-top: 1px dashed #bbb; margin-top: 3mm; }
+  .thanks {
+    font-family: 'Arial Black', Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+  }
+  .policy { font-size: 8.5px; color: #444; margin: 1.5mm 0 1mm; line-height: 1.55; }
   .bfooter { font-size: 7.5px; color: #bbb; letter-spacing: 5px; margin-top: 2mm; }
-  .cut     { text-align: center; font-size: 8px; color: #ccc; letter-spacing: 5px; margin-top: 5mm; }
+  .cut { text-align: center; font-size: 8px; color: #ccc; letter-spacing: 5px; margin-top: 4mm; }
 </style>
 </head>
 <body>
@@ -192,29 +261,29 @@ function buildTicketHTML(t: TicketData): string {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   Imprime el ticket usando un iframe oculto.
-   Ventaja sobre popup: no hay bloqueadores, y la altura del documento es
-   exactamente la altura del ticket → @page auto funciona correctamente.
-
-   Además, medimos scrollHeight en px → convertimos a mm → inyectamos
-   @page { size: 80mm [exacto]mm } para que el driver no añada hoja extra.
+   Imprime el ticket usando un iframe oculto de ancho exacto 80mm.
+   Flujo:
+     1. Se crea el iframe (width = 302px ≈ 80mm a 96dpi).
+     2. Se escribe el HTML del ticket.
+     3. En onload, se fuerza width:80mm y se espera un requestAnimationFrame
+        para que el navegador haya recalculado el layout completo.
+     4. Se mide documentElement.scrollHeight (más fiable que body.scrollHeight).
+     5. Se inyecta @page con el tamaño exacto en mm → sin espacio sobrante.
+     6. Se llama print() 500ms después (margen para que el @page se aplique).
 ───────────────────────────────────────────────────────────────────────────── */
-const FRAME_ID = '__urban7_print_frame'
-const PX_PER_MM = 3.7795275591 // 96dpi estándar CSS
+const FRAME_ID   = '__urban7_print_frame'
+const PX_PER_MM  = 3.7795275591  // 96dpi estándar CSS
 
 function imprimirTicket(ticket: TicketData) {
-  // Limpiar frame anterior si existe
   document.getElementById(FRAME_ID)?.remove()
 
   const frame = document.createElement('iframe')
-  frame.id = FRAME_ID
+  frame.id    = FRAME_ID
   frame.setAttribute('title', 'Impresión de ticket')
-  // Oculto, fuera del viewport, sin tamaño visible
+  // Oculto, ancho exacto 80mm en px para layout correcto, fuera del viewport
   frame.style.cssText = [
-    'position:fixed',
-    'right:0',
-    'bottom:0',
-    'width:302px',   // ~80mm a 96dpi — necesario para que el layout calcule bien
+    'position:fixed', 'right:0', 'bottom:0',
+    'width:302px',   // 80mm a 96dpi — necesario para el layout del ticket
     'height:1px',
     'border:none',
     'opacity:0',
@@ -223,41 +292,42 @@ function imprimirTicket(ticket: TicketData) {
     'overflow:hidden'
   ].join(';')
 
-  // onload ANTES de escribir el documento
   frame.onload = () => {
     const doc  = frame.contentDocument
     const body = doc?.body
-    if (!doc || !body) return
+    const html = doc?.documentElement
+    if (!doc || !body || !html) return
 
-    // Forzar reflow para obtener altura real
-    body.style.width = '80mm'
+    // Elimina cualquier margen residual del navegador en html + body
+    html.style.cssText += ';margin:0!important;padding:0!important;width:80mm!important;'
+    body.style.cssText += ';margin:0!important;padding:0!important;width:80mm!important;'
 
-    // Medir la altura real del contenido del ticket en mm
-    const heightPx = body.scrollHeight
-    const heightMm = Math.ceil(heightPx / PX_PER_MM) + 6 // +6mm de margen inferior seguro
+    // requestAnimationFrame asegura que el reflow terminó antes de medir
+    requestAnimationFrame(() => {
+      // scrollHeight del documentElement es la medida más confiable
+      const heightPx = Math.max(html.scrollHeight, body.scrollHeight, body.offsetHeight)
+      // +2mm de seguridad para evitar corte al final
+      const heightMm = Math.ceil(heightPx / PX_PER_MM) + 2
 
-    // Inyectar @page con tamaño exacto — sobreescribe el "auto" del CSS base
-    // Esto impide que el driver use su altura mínima (ej: 210mm)
-    const pageStyle = doc.createElement('style')
-    pageStyle.textContent = `@page { size: 80mm ${heightMm}mm !important; margin: 0 !important; }`
-    doc.head.appendChild(pageStyle)
+      // Inyecta @page con tamaño exacto DESPUÉS de medir → sin espacio sobrante
+      const st = doc.createElement('style')
+      st.textContent = `@page { size: 80mm ${heightMm}mm; margin: 0mm 0mm 0mm 0mm; }`
+      doc.head.appendChild(st)
 
-    // Esperar a que el browser aplique el nuevo @page y estabilice el layout
-    setTimeout(() => {
-      try {
-        frame.contentWindow?.focus()
-        frame.contentWindow?.print()
-      } catch {
-        // noop — el usuario puede haber cancelado
-      }
-      // Limpiar el frame tras cerrar el diálogo de impresión
-      setTimeout(() => document.getElementById(FRAME_ID)?.remove(), 4000)
-    }, 450)
+      // 500ms para que el browser aplique el nuevo @page antes de imprimir
+      setTimeout(() => {
+        try {
+          frame.contentWindow?.focus()
+          frame.contentWindow?.print()
+        } catch { /* usuario canceló o bloqueó popup */ }
+        setTimeout(() => document.getElementById(FRAME_ID)?.remove(), 4000)
+      }, 500)
+    })
   }
 
   document.body.appendChild(frame)
 
-  // Escribir el HTML — esto dispara el evento 'load' del iframe
+  // Escribir HTML → dispara el evento 'load' del iframe
   const doc = frame.contentDocument!
   doc.open()
   doc.write(buildTicketHTML(ticket))
