@@ -8,6 +8,15 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['img/logo.png'],
+      workbox: {
+        // Limpia cachés de versiones antiguas cuando un nuevo SW activa.
+        // Evita que los chunks JS del build anterior queden sirviendo
+        // después de que los hashes cambian en una nueva compilación.
+        cleanupOutdatedCaches: true,
+        // Siempre servir index.html para rutas SPA (react-router)
+        navigateFallback: 'index.html',
+        navigateFallbackDenylist: [/^\/api\//]
+      },
       manifest: {
         name: 'URBAN SEVEN · POS',
         short_name: 'URBAN 07',
